@@ -1,0 +1,48 @@
+{
+  "name": "agent-memory-mcp",
+  "version": "0.1.0",
+  "description": "Persistent cross-session memory for AI agents — store, recall, search, and summarize memories across agent boundaries",
+  "author": "THRONE",
+  "license": "MIT",
+  "transport": "stdio",
+  "tools": [
+    {
+      "name": "remember",
+      "description": "Store a memory for an agent with optional TTL auto-expiry"
+    },
+    {
+      "name": "recall",
+      "description": "Retrieve relevant memories by keyword search, sorted by relevance and recency"
+    },
+    {
+      "name": "forget",
+      "description": "Delete memories by exact key, wildcard prefix, or clear all"
+    },
+    {
+      "name": "get_user_profile",
+      "description": "Accumulated knowledge about a user/entity aggregated across all agents"
+    },
+    {
+      "name": "summarize_session",
+      "description": "Store a session summary with key decisions and unresolved items"
+    },
+    {
+      "name": "search_across_agents",
+      "description": "Cross-agent memory search across all stored memories"
+    },
+    {
+      "name": "get_memory_stats",
+      "description": "Memory usage dashboard with per-agent counts and type distribution"
+    }
+  ],
+  "resources": [
+    {
+      "uri": "memory://agents",
+      "description": "List all agents with memory counts"
+    },
+    {
+      "uri": "memory://recent",
+      "description": "Last 50 memories stored across all agents"
+    }
+  ]
+}

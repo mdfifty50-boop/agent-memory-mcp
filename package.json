@@ -1,0 +1,39 @@
+{
+  "name": "agent-memory-mcp",
+  "version": "0.1.0",
+  "mcpName": "io.github.mdfifty50-boop/agent-memory",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdfifty50-boop/agent-memory-mcp"
+  },
+  "description": "MCP server providing persistent cross-session memory for AI agents — store, recall, search, and summarize memories across agent boundaries",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "agent-memory-mcp": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test src/**/*.test.js"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "agent-memory",
+    "persistent-memory",
+    "cross-session",
+    "ai-agent",
+    "knowledge-base",
+    "recall",
+    "model-context-protocol"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.24.0"
+  }
+}
