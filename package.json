@@ -1,5 +1,5 @@
 {
-  "name": "agent-memory-mcp",
+  "name": "agent-memorystore-mcp",
   "version": "0.1.0",
   "mcpName": "io.github.mdfifty50-boop/agent-memory",
   "repository": {
@@ -10,7 +10,7 @@
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "agent-memory-mcp": "src/index.js"
+    "agent-memorystore-mcp": "src/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
