@@ -12,7 +12,31 @@ import {
   recentMemories,
 } from './storage.js';
 
+// All agent IDs used in these tests — wiped before each suite
+const TEST_AGENTS = [
+  'agent-1',
+  'agent-ttl',
+  'agent-recall',
+  'agent-forget',
+  'agent-forget2',
+  'agent-profile-1',
+  'agent-profile-2',
+  'agent-session',
+  'agent-x',
+  'agent-y',
+];
+
+function cleanAll() {
+  for (const id of TEST_AGENTS) forget(id, '*');
+}
+
 describe('remember', () => {
+  before(() => {
+    // Clean up this agent before tests so total_memories is predictable
+    forget('agent-1', '*');
+    forget('agent-ttl', '*');
+  });
+
   it('stores a memory and returns confirmation', () => {
     const result = remember('agent-1', 'user_language', 'English', 'preference');
     assert.equal(result.stored, true);
@@ -34,6 +58,7 @@ describe('remember', () => {
 
 describe('recall', () => {
   before(() => {
+    forget('agent-recall', '*');
     remember('agent-recall', 'project_status', 'Dashboard is 80% complete', 'fact');
     remember('agent-recall', 'api_key_rotation', 'Keys rotated on March 15', 'learning');
     remember('agent-recall', 'dashboard_color', 'User prefers dark theme', 'preference');
@@ -64,6 +89,8 @@ describe('recall', () => {
 
 describe('forget', () => {
   before(() => {
+    forget('agent-forget', '*');
+    forget('agent-forget2', '*');
     remember('agent-forget', 'temp_a', 'val', 'fact');
     remember('agent-forget', 'temp_b', 'val', 'fact');
     remember('agent-forget', 'keep_me', 'val', 'fact');
@@ -91,6 +118,8 @@ describe('forget', () => {
 
 describe('getUserProfile', () => {
   before(() => {
+    forget('agent-profile-1', '*');
+    forget('agent-profile-2', '*');
     remember('agent-profile-1', 'ahmed_language', 'Ahmed speaks Arabic and English', 'fact');
     remember('agent-profile-2', 'ahmed_preference', 'Ahmed prefers dark mode', 'preference');
     remember('agent-profile-1', 'ahmed_meeting', 'Met Ahmed on March 10', 'interaction');
@@ -113,6 +142,10 @@ describe('getUserProfile', () => {
 });
 
 describe('summarizeSession', () => {
+  before(() => {
+    forget('agent-session', '*');
+  });
+
   it('stores session summary and returns count', () => {
     const result = summarizeSession(
       'agent-session',
@@ -139,6 +172,8 @@ describe('summarizeSession', () => {
 
 describe('searchAcrossAgents', () => {
   it('finds memories across multiple agents', () => {
+    forget('agent-x', '*');
+    forget('agent-y', '*');
     remember('agent-x', 'kubernetes_config', 'Using k3s on edge nodes', 'fact');
     remember('agent-y', 'kubernetes_issue', 'Pod restart loop on node-3', 'learning');
     const result = searchAcrossAgents('kubernetes');
