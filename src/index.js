@@ -14,12 +14,38 @@ import {
   listAgentsResource,
   recentMemories,
 } from './storage.js';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8'));
+const startTime = Date.now();
+let toolCallCount = 0;
+
+function wrap(fn) {
+  return async (...args) => {
+    toolCallCount++;
+    try { return await fn(...args); }
+    catch (e) { return { content: [{ type: 'text', text: JSON.stringify({ error: e.message }) }] }; }
+  };
+}
 const server = new McpServer({
   name: 'agent-memory-mcp',
-  version: '0.1.0',
+  version: pkg.version,
   description: 'Persistent cross-session memory for AI agents — store, recall, search, and summarize memories across agent boundaries',
 });
+
+server.tool('health_check', 'Returns server health, uptime, version, and call stats', {},
+  wrap(async () => ({
+    content: [{ type: 'text', text: JSON.stringify({
+      status: 'healthy', server: 'agent-memorystore-mcp', version: pkg.version,
+      uptime_seconds: Math.floor((Date.now() - startTime) / 1000),
+      tool_calls_served: toolCallCount,
+    }, null, 2) }],
+  }))
+);
 
 // ═══════════════════════════════════════════
 // TOOL: remember
